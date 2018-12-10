@@ -58,13 +58,10 @@
 	})
 	//响应
 	axios.interceptors.response.use(res=>{
-		console.log(res);
-		res=res.data;
+		res=res.data
 		return res;
 	},err=>{
-		console.log(err.response);
 		if(err.response){
-			console.log(Routes);
 			if(err.response.status===401 && !(Routes.currentRoute.fullPath).includes('login')){
 			   sessionStorage.removeItem('token');
 				Routes.replace({
