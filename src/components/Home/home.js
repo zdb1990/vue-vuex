@@ -1,9 +1,11 @@
 //辅助工具 调用同时多个getter
 import { mapGetters, mapMutations } from 'vuex';
+import Data from './../../common/select-tree/data';
 export default {
     data() {
         return {
-
+            treeData: Data,
+            palcehoader: '请选择'
         }
     },
     computed: {

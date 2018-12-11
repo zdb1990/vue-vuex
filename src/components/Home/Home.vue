@@ -1,6 +1,10 @@
 <template>
    <div>
-	<div>
+	 <div class="tree-box">
+		 <!-- 下拉树-->
+		  <tree-select :palcehoader="palcehoader" :treeData="treeData"></tree-select> 
+	 </div>
+	<!-- <div>
 		我是console
 		<div @click="tap">我实现加法功能:{{sum}}</div>
 		<div>
@@ -21,8 +25,12 @@
 		 <div @click="showOdd">storage:{{storageItem}}</div>
 		 {{show}}
 		 <div v-if="show">我是偶数才显示</div>
-	 </div>
-   </div>
+		 <div>
+			 <input type="text" v-fouce>
+		 </div>
+	 </div>-->
+	
+   </div> 
 </template>
 <script src="./home.js"></script>
 <style lang="scss" src="./home.scss"></style>
