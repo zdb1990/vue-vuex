@@ -1,7 +1,6 @@
 <template>
     <li class="ins_tree_lable" @click.stop="siginTap(node,$event)">
         <div class="ins_tree_box"
-         v-show="node.isvible"
          :style="{'padding-left':node.level*16+'px'}"
          :class="{'is-expanded' :currentNodeId===node.id}"
          >
@@ -14,15 +13,13 @@
             </div>
             <span>{{node.name}}</span>
         </div>
-         <ul class="ins_tree-nodes_children"  v-if="node.isOpen">
+         <ul class="ins_tree-nodes_children"  v-if="node.isOpen&&node.children">
             <tree-node 
             v-for="item in node.children" 
             :node="item" 
             :key="item.id"
             :eventHub="eventHub"
             :currentNodeId="currentNodeId"
-            :query="query"
-            :isQueryString="isQueryString"
             ></tree-node>
         </ul>
     </li>
@@ -38,36 +35,24 @@
           },
           currentNodeId:0,
           eventHub:{},
-          query:{
-                type:String
-          },
-          isQueryString:{
-                type:Boolean
-          }
       },
       data(){
         return{
-        //    nodeData:this.node,
-           //选中的id
         }
       },
       methods:{
         siginTap(item,event){
-            console.log(item)
-            if(item.children){
-                if(!item.isOpen){
-                    this.$set(item,'isOpen',true);
-                    this.eventHub.$emit('node-click',item,event);
-                }else{
-                    this.$set(item,'isOpen',false);
-                }
+            if(!item.isOpen){
+                this.$set(item,'isOpen',true);
+                this.eventHub.$emit('node-click',item);
             }else{
-                this.eventHub.$emit('node-click',item,event);
+                this.$set(item,'isOpen',false);
+                // this.$store.state.Mconsole.count=item.id;
+                this.eventHub.$emit('node-click',item);
             }
         }
       },
       created(){
-          console.log(this.node)
       }
   }
 </script>

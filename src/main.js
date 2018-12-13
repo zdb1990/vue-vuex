@@ -9,7 +9,7 @@ import Mthhods from './handleRes/config.vue';
 import store from './store';
 //引入全局配置的自定义指令
 import publics from './public/public';
-// //引入下拉树
+//引入下拉树
 import SelectTree from './common/select-tree/';
 //引入icon
 import './../static/font-icon/iconfont.css';

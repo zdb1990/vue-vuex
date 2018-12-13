@@ -1,12 +1,13 @@
 //辅助工具 调用同时多个getter
 import { mapGetters, mapMutations } from 'vuex';
-import Data from './../../common/select-tree/data';
+// import Data from './../../common/select-tree/data';
+// import the component
+// import Treeselect from '@riophae/vue-treeselect'
+// // import the styles
+// import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 export default {
     data() {
-        return {
-            treeData: Data,
-            palcehoader: '请选择'
-        }
+        return {}
     },
     computed: {
         sum() {
@@ -26,7 +27,7 @@ export default {
         }),
         ...mapGetters({
             show: 'Mstorage/oddShow'
-        })
+        }),
         // sum () {
         // 	return this.$store.state.count
         // },
@@ -44,17 +45,26 @@ export default {
         // }
     },
     methods: {
-        tap() {
-            this.$store.commit('Mconsole/accumulation')
-        },
-        ...mapMutations({
-            remove: 'Mconsole/deletes'
-        }),
-        dispatch() {
-            this.$store.dispatch('Mconsole/subtraction')
-        },
-        showOdd() {
-            this.$store.dispatch('Mstorage/accumulation')
-        }
+        // tap() {
+        //     this.$store.commit('Mconsole/accumulation')
+        // },
+        // ...mapMutations({
+        //     remove: 'Mconsole/deletes'
+        // }),
+        // dispatch() {
+        //     this.$store.dispatch('Mconsole/subtraction')
+        // },
+        // showOdd() {
+        //     this.$store.dispatch('Mstorage/accumulation')
+        // },
+        // submit() {
+        //     console.log(this.selected.id);
+        // },
+        // setSelectedId(val) {
+        //     console.log(val);
+        // },
+        // errorText(val) {
+        //     console.log(val);
+        // }
     }
 }

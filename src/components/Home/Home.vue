@@ -1,9 +1,6 @@
 <template>
    <div>
-	 <div class="tree-box">
-		 <!-- 下拉树-->
-		  <tree-select :palcehoader="palcehoader" :treeData="treeData"></tree-select> 
-	 </div>
+	   <!-- <button @click="submit">提交</button> -->
 	<!-- <div>
 		我是console
 		<div @click="tap">我实现加法功能:{{sum}}</div>
@@ -32,5 +29,5 @@
 	
    </div> 
 </template>
-<script src="./home.js"></script>
+ <script src="./home.js"></script>
 <style lang="scss" src="./home.scss"></style>

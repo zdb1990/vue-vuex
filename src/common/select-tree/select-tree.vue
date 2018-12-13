@@ -1,18 +1,22 @@
 <template>
-   <div class="ins-input">
+   <div class="ins-input" >
        <!-- 下拉框 -->
-       <div class="ins_tree">
-            <div class="ins_input_single">
-                <i class="icon iconfont icon-jiantou ins_icon" :class="{'ins_resever':treeVisible}" @click="treeVisible=!treeVisible"></i>
-                <input type="text" class="ins_input" 
+       <div class="ins_tree" v-clickoutside="handleCloseTree">
+            <div class="ins_input_single" @mouseenter="hovering=true" @mouseleave="hovering=false">
+                <i class="icon iconfont icon-jiantou ins_icon" 
+                :class="{'ins_resever':treeVisible,'icon iconfont icon-shanchu':showCloseIcon}"
+                @click="handleCloseTree(treeVisible)"></i>
+                <input type="text" class="ins_input"  :class="{'error-inp':error}"
                  :placeholder="placetext" 
                  v-model="value"
-                 @input="seatchVal"
-                 @focus="treeVisible=true"
+                 @focus="treeVisible=true;error=false"
+                 readonly unselectable="on"
+                 @blur="closeTree"
                 >
+                <div v-show="error" class="error-message">部门不能为空</div>
             </div>
              <!-- 下拉框显示子内容 -->
-            <div class="ins_treeNode" :style="treeVisible ? 'display:block':'display:none'" >
+            <div class="ins_treeNode" v-show="treeVisible" >
                 <div class="ins_treeNode_wrapper">
                     <ul class="ins_tree-nodes">
                          <tree-node 
@@ -21,8 +25,6 @@
                          :key="children.id"
                          :eventHub="eventHub"
                          :currentNodeId="currentNodeId"
-                         :query="query"
-                         :isQueryString="isQueryString"
                          >
                          </tree-node>
                     </ul>
@@ -39,6 +41,7 @@ import {objArrDeepCopy} from './../../public/coopyData';
 import { debounce } from "throttle-debounce";
 import Vue from 'vue';
 import treeNode from './tree-node';
+import Clickoutside from "./clickoutside";
     export default{
        name:'tree-select',
        components:{
@@ -53,58 +56,69 @@ import treeNode from './tree-node';
            //palcehoader的提示
            palcehoader:{
                type:String,
-               default:'请选择'
+               default:'请选择部门'
            },
        },
        created(){
-           this.eventHub.$on('node-click',this.handleNodeClick)
+           this.eventHub.$on('node-click',this.handleNodeClick);
+       },
+       computed:{
+            showCloseIcon(){
+                return this.hovering&&this.value !== undefined &&this.value !== '';
+            }
        },
        data(){
            return{
-               treeNodes:objArrDeepCopy(this.treeData,{isOpen:false,isvible:true}),
+               treeNodes:objArrDeepCopy(this.treeData,{isOpen:false}),
                placetext:this.palcehoader,
                //icon旋转
                treeVisible:false,
                currentNodeId:'',
                eventHub:new Vue(),
                value:'',
-               //搜索字符串
-               query:'',
-               isQueryString:false
+               error:false,
+               hovering:false
            }
        },
        methods:{
            handleNodeClick(node,event){
-             console.log(node);
+            console.log(node);
              if(node){
                 this.value=node.name;
                 this.currentNodeId = node.id;
+                this.error=false;
+                this.$emit('setSelectedId',node);
              }
           },
-          seatchVal:debounce(1000,function(){
-              console.log(1)
-            //   console.log(this);
-             this.isQueryString=true;
-             if(this.isQueryString){
-                 console.log(2)
-               this.query=this.value;
-               this.treeFilter(this.treeNodes)
-             }
-          }),
-          //查找过滤
-          treeFilter(node){
-            let filterarr=[];
-            console.log(node);
-            node.forEach(item => {
-                item.isvible=item.name.toLowerCase().indexOf(this.query.toLowerCase())>-1;
-                // this.treeFilter(item);
-                if(item.children){
-                    this.treeFilter(item.children);
+          closeTree(){
+               if(!this.currentNodeId){
+                    this.error=true;
+               }
+          },
+          handleCloseTree(val){
+              console.log(this.showCloseIcon);
+              if(this.showCloseIcon){
+                console.log(3);
+                this.value='';
+                this.currentNodeId='';
+                
+              }
+             if(val==undefined){
+                console.log(4);
+                // this.error=false;
+                if(this.currentNodeId){
+                    this.error=false;
                 }
-            });
+                this.treeVisible = false;
+                this.treeNodes=objArrDeepCopy(this.treeData,{isOpen:false});
+            }else{
+                console.log(5);
+                this.error=true;
+                this.treeVisible = false;
+            }
           }
        },
-       //监听输入变化
+       directives: { Clickoutside },
     }
 </script>
 <style lang="scss">
@@ -146,6 +160,8 @@ import treeNode from './tree-node';
        text-indent: 10px;
        line-height: 1;
        font-size: 14px;
+       color:#999;
+       transition: .5 all ease;
    }
    //下拉框
    .ins_treeNode{
@@ -157,5 +173,17 @@ import treeNode from './tree-node';
        position: absolute;
        top:40px;
        z-index: 1000;
+   }
+   .error-message{
+       font-size: 12px;
+       text-align: left;
+       color: red;
+       line-height: 30px;
+       padding-left: 15px;
+   }
+   //错误提示input
+   .error-inp{
+       border: 1px solid red;
+       color: red;
    }
 </style>
