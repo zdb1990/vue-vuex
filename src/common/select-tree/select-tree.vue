@@ -3,8 +3,8 @@
        <!-- 下拉框 -->
        <div class="ins_tree" v-clickoutside="handleCloseTree">
             <div class="ins_input_single" @mouseenter="hovering=true" @mouseleave="hovering=false">
-                <i class="icon iconfont icon-jiantou ins_icon" 
-                :class="{'ins_resever':treeVisible,'icon iconfont icon-shanchu':showCloseIcon}"
+                <i class="icon iconfont icon-jiantou ins_icon"
+                :class="{'error-color':error,'ins_resever':treeVisible,'icon iconfont icon-shanchu':showCloseIcon}"
                 @click="handleCloseTree(treeVisible)"></i>
                 <input type="text" class="ins_input"  :class="{'error-inp':error}"
                  :placeholder="placetext" 
@@ -134,7 +134,7 @@ import Clickoutside from "./clickoutside";
       position: absolute;
       display: block;
       width:20px;
-      height: 100%; 
+    //   height: 100%; 
       top: 0;
       right: 10px;
       line-height: 36px;
@@ -161,7 +161,7 @@ import Clickoutside from "./clickoutside";
        line-height: 1;
        font-size: 14px;
        color:#999;
-       transition: .5 all ease;
+    //    transition: .5 all ease;
    }
    //下拉框
    .ins_treeNode{
@@ -177,13 +177,29 @@ import Clickoutside from "./clickoutside";
    .error-message{
        font-size: 12px;
        text-align: left;
-       color: red;
+       color: rgb(245, 34, 45);
        line-height: 30px;
        padding-left: 15px;
    }
    //错误提示input
    .error-inp{
-       border: 1px solid red;
-       color: red;
+       border: 1px solid rgb(245, 34, 45);
+       transition: .5s all ease;
    }
+   .error-color{
+       display: none;
+   }
+   //改变placeholder颜色
+   ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+      color:  #999;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+       color:  #999;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+       color:  #999;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+      color:  #999;
+    }
 </style>

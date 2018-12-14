@@ -78,6 +78,10 @@
             background: #0489e0;
             color: #ffffff;
         }
+        // &:hover{
+        //     background: #0489e0;
+        //     color: #ffffff;
+        // }
     }
     //三角
      .ins_tree_trans{
