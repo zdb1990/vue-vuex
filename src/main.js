@@ -17,7 +17,8 @@ import './../static/font-icon/iconfont.css';
 import './../static/css/reset.css';
 //引入验证
 import Vuelidate from 'vuelidate';
-
+// //引入树形表格
+import TreeTable from './common/tree-table/';
 Vue.config.productionTip = false;
 Vue.prototype.$post = Mthhods.post;
 Vue.prototype.$get = Mthhods.get;
@@ -26,6 +27,7 @@ Vue.prototype.$delete = Mthhods.delete;
 Vue.use(publics);
 Vue.use(SelectTree);
 Vue.use(Vuelidate);
+Vue.use(TreeTable);
 /* eslint-disable no-new */
 new Vue({
     el: '#app',
