@@ -19,7 +19,7 @@
                <table class="table-content" v-if="treeDataSource.length>0">
                    <tbody class="ant-table-tbody">
                        <tr >
-                           <td class="colums" :rowspan="0" :style="{'width':(t1W+1)+'px'}"><span class="admin-title">{{adminName}}{{t1W}}</span></td>
+                           <td class="colums" :rowspan="0" :style="{'width':(t1W+1)+'px'}"><span class="admin-title" :style="{'width':(t1W+1)+'px'}">{{adminName}}{{t1W}}</span></td>
                            <!-- <td > -->
                                <tree-item v-for="(model,i) in treeDataSource"
                                 :key="'root_node'+i"
@@ -174,6 +174,12 @@ import domEach from './domeach';
       border-right:1px solid #e2e7eb; 
       border-bottom:1px solid #e8e8e8; 
       box-sizing: border-box;
+      .admin-title{
+        display: block;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+      }
    }
   //双击不能选中文本
   .level{
