@@ -1,9 +1,12 @@
 <template>
     <div class="tree-page">
         <!-- actionFunc编辑，deleFunc删除，@handlerExpand展开/收缩 -->
-        <tree-table ref="recTree" :list.sync="treeData" @actionFunc="actionFunc" 
+         <tree-table ref="recTree" :list.sync="treeData" @actionFunc="actionFunc" 
         @deleteFunc="deleteFunc" @handlerExpand="handlerExpand" >
-           </tree-table>
+        </tree-table>
+        <!-- <table-tree :list.sync="treeData" 
+        @actionFunc="actionFunc" 
+        @deleteFunc="deleteFunc" @handlerExpand="handlerExpand"></table-tree> -->
     </div>
 </template>
 <script>
@@ -36,6 +39,6 @@ import Tabledata from './data.js';
 </script>
 <style>
  .tree-page{
-      padding: 0 20px;
+     margin-top: 30px;
  }
 </style>

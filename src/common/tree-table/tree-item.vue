@@ -5,30 +5,32 @@
               <td >
                   <table>
                       <tr class="level">
-                          <td class="td-name">
+                          <td class="t2">
                              <div class="td-title" @click.stop.prevent="handlerExpand(model)" :style="{'padding-left':model.level*16+'px'}">
-                                <span v-if="model.Children&&model.Children.length"><i :class="model.isExpand ? 'icon iconfont icon-jianhao':'icon iconfont icon-jiahao'"></i></span> 
+                                <span v-if="model.Children&&model.Children.length">
+                                    <i :class="model.isExpand ? 'icon iconfont icon-jianhao':'icon iconfont icon-jiahao'"></i>
+                                </span>  
                                 <a class="ellipsis">
                                     <span :title="model.Name">{{model.Name}}</span>
                                 </a>
                              </div>
                           </td>
-                          <td class="t2">
+                          <td class="t3">
                                {{model.Statue}}
                           </td>
-                          <td class="t3">
+                          <td class="t4">
                               {{model.CreatedBy}}
                           </td>
-                          <td class="t4">
+                          <td class="t5">
                               {{model.CreatedTime}}
                           </td>
-                          <td class="t5">
+                          <td class="t6">
                              {{model.MemberCount}}
                           </td>
-                           <td class="t6">
+                           <td class="t7">
                               {{model.Description}}
                           </td>
-                          <td class="t7">
+                          <td class="t8">
                             <a href="javascript:;" @click="actionFunc(model)">编辑</a>
                             <a href="javascript:;" @click="deleteFunc(model)">删除</a>
                           </td>
@@ -87,6 +89,7 @@ export default{
         }
     },
     created(){
+        // console.log(this.t2)
         //  console.log(this.trees)
     }
 }

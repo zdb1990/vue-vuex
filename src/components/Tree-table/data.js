@@ -1,6 +1,7 @@
 const Tabledata = [{
     Id: 1,
     Name: 'adminGroup',
+    UserGroupType: "admin",
     Children: [{
             Id: 2,
             Name: 'ux',

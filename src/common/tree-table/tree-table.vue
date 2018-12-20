@@ -3,14 +3,14 @@
        <table class="ant-table">
             <thead class="ant-table-thead" slot="t-header">
                <tr>
-                   <td style="width:199px">一级组</td>
-                   <td style="width:134px">级组</td>
-                   <td style="width:200px">组状态</td>
-                   <td>创建人</td>
-                   <td>创建时间</td>
-                   <td>组内人员</td>
-                   <td>描述</td>
-                   <td>操作</td>
+                   <td id="t1">一级组</td>
+                   <td id="t2">级组</td>
+                   <td id="t3">组状态</td>
+                   <td id="t4">创建人</td>
+                   <td id="t5">创建时间</td>
+                   <td id="t6">组内人员</td>
+                   <td id="t7">描述</td>
+                   <td id="t8">操作</td>
                </tr>
            </thead>
        </table>
@@ -19,8 +19,8 @@
                <table class="table-content" v-if="treeDataSource.length>0">
                    <tbody class="ant-table-tbody">
                        <tr >
-                           <td class="colums" :rowspan="0"><span class="admin-title">{{adminName}}</span></td>
-                           <td >
+                           <td class="colums" :rowspan="0" :style="{'width':(t1W+1)+'px'}"><span class="admin-title">{{adminName}}{{t1W}}</span></td>
+                           <!-- <td > -->
                                <tree-item v-for="(model,i) in treeDataSource"
                                 :key="'root_node'+i"
                                 :root="0"
@@ -29,8 +29,9 @@
                                 @deleteFunc="deleteFunc"
                                 :nodes="treeDataSource.length"
                                 :model.sync="model"
+                                :t2="t2W"
                                ></tree-item>
-                           </td>
+                           <!-- </td> -->
                        </tr>
                    </tbody>
                </table>
@@ -42,6 +43,7 @@
 <script>
 //引入子元素
 import TreeItem from './tree-item';
+import domEach from './domeach';
  export default {
       name:'treeTable',
       props:['list'],
@@ -51,19 +53,40 @@ import TreeItem from './tree-item';
       data(){
         return{
             treeDataSource:[],
-            adminName:''
+            adminName:'',
+            t1W:'',
+            t2W:''
         }
      },
      //监听父属性传来的值
      watch:{
         'list':{
             handler(){
-                console.log('变化')
                 this.initTreeData() //数据处理
             }
         }
+        
+     },
+     computed:{
      },
      methods:{
+         Windowresize(){
+           window.onload=()=>{
+                this.t1W=document.getElementById('t1').clientWidth;
+                for(let i=2;i<=8;i++){
+                    let t='t'+i;
+                    domEach(t)
+                }
+
+           }
+           window.onresize=()=>{
+                this.t1W=document.getElementById('t1').clientWidth;
+                for(let i=2;i<=8;i++){
+                  let t='t'+i;
+                  domEach(t)
+               }
+           }
+         }, 
          initTreeData(){
              console.log('处理前的:',JSON.parse(JSON.stringify(this.list)));
              //这里一定要转化，要不它的值变化监听不到
@@ -102,6 +125,7 @@ import TreeItem from './tree-item';
           vm.$nextTick(()=>{
               vm.initTreeData();
           })
+          vm.Windowresize()
      }
  }
 </script>
@@ -120,9 +144,10 @@ import TreeItem from './tree-item';
   }
   //表头td
   .ant-table-thead tr td{
-     padding: 10px 0;
+    padding: 10px 0;
     background: #fff;
     color: #242a30;
+    text-align: center;
     border-left:1px solid #e2e7eb;
     border-bottom: 1px solid #b6c2c9;
   }
@@ -140,14 +165,15 @@ import TreeItem from './tree-item';
     border-right:1px solid #e2e7eb; 
     border-bottom:1px solid #e8e8e8; 
     vertical-align: middle;
+    text-align: center;
+    box-sizing: border-box;
   }
   .colums{
-      width:200px;
-    //   height: 100%;
-    //   position: relative;
+      text-align: center;
       vertical-align: middle;
       border-right:1px solid #e2e7eb; 
-       border-bottom:1px solid #e8e8e8; 
+      border-bottom:1px solid #e8e8e8; 
+      box-sizing: border-box;
    }
   //双击不能选中文本
   .level{
@@ -156,25 +182,7 @@ import TreeItem from './tree-item';
     -o-user-select:none;
     user-select:none;
   }
-  //级组
-  .td-name{
-      width: 134px;
-  }
-  .t2{
-      width: 200px;
-  }
-  .t3{
-      width: 200px;
-  }
-  .t4{
-      width: 265px;
-  }
-  .t5{
-      width: 266px;
-  }
-  .t6{
-      width: 135px;
-  }
+
   .item-body table tr td:last-child{
       border-right:0px;
   }
@@ -183,7 +191,7 @@ import TreeItem from './tree-item';
   }
   .td-title{
     //   每一行列表
-    width: 120px;
+    // width: 120px;
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;

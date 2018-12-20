@@ -19,6 +19,9 @@ import './../static/css/reset.css';
 import Vuelidate from 'vuelidate';
 // //引入树形表格
 import TreeTable from './common/tree-table/';
+import TableTree from './common/table-tree/';
+//引入bootstrap样式
+// import './../node_modules/bootstrap/dist/css/bootstrap.css';
 Vue.config.productionTip = false;
 Vue.prototype.$post = Mthhods.post;
 Vue.prototype.$get = Mthhods.get;
@@ -28,6 +31,7 @@ Vue.use(publics);
 Vue.use(SelectTree);
 Vue.use(Vuelidate);
 Vue.use(TreeTable);
+Vue.use(TableTree);
 /* eslint-disable no-new */
 new Vue({
     el: '#app',
