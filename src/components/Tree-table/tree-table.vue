@@ -4,9 +4,7 @@
          <tree-table ref="recTree" :list.sync="treeData" @actionFunc="actionFunc" 
         @deleteFunc="deleteFunc" @handlerExpand="handlerExpand" >
         </tree-table>
-        <!-- <table-tree :list.sync="treeData" 
-        @actionFunc="actionFunc" 
-        @deleteFunc="deleteFunc" @handlerExpand="handlerExpand"></table-tree> -->
+        <button @click="Validation">表单验证</button>
     </div>
 </template>
 <script>
@@ -32,6 +30,10 @@ import Tabledata from './data.js';
        //展开
        handlerExpand(){
 
+       },
+       //跳转到表单验证
+       Validation(){
+         this.$router.push({path:'from'})
        }
       
    }

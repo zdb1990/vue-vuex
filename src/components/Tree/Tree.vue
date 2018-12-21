@@ -44,5 +44,6 @@ import Data from './../../common/select-tree/data.js';
   }
   .tree-table-btn{
       margin-top: 200px;
+      text-align: center;
   }
 </style>

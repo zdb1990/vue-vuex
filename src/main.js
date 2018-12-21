@@ -1,5 +1,3 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
 import router from './router'
@@ -15,13 +13,19 @@ import SelectTree from './common/select-tree/';
 import './../static/font-icon/iconfont.css';
 //引入重置样式
 import './../static/css/reset.css';
-//引入验证
-import Vuelidate from 'vuelidate';
-// //引入树形表格
+//引入树形表格
 import TreeTable from './common/tree-table/';
 import TableTree from './common/table-tree/';
+//表单验证
+import VeeValidate from 'vee-validate';
 //引入bootstrap样式
-// import './../node_modules/bootstrap/dist/css/bootstrap.css';
+import './../node_modules/bootstrap/dist/css/bootstrap.css';
+//引入中英文切换
+import config from './public/vee-rule/config';
+//引入中英文切换和自定义正则文件
+import './public/vee-rule'
+//引入自定义表单组件
+import UxFromItem from './common/from-item/index';
 Vue.config.productionTip = false;
 Vue.prototype.$post = Mthhods.post;
 Vue.prototype.$get = Mthhods.get;
@@ -29,9 +33,10 @@ Vue.prototype.$put = Mthhods.put;
 Vue.prototype.$delete = Mthhods.delete;
 Vue.use(publics);
 Vue.use(SelectTree);
-Vue.use(Vuelidate);
 Vue.use(TreeTable);
 Vue.use(TableTree);
+Vue.use(VeeValidate, config);
+Vue.use(UxFromItem);
 /* eslint-disable no-new */
 new Vue({
     el: '#app',

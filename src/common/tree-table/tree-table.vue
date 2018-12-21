@@ -72,7 +72,10 @@ import domEach from './domeach';
      methods:{
          Windowresize(){
            window.onload=()=>{
-                this.t1W=document.getElementById('t1').clientWidth;
+               if(document.getElementById('t1')){
+                 this.t1W=document.getElementById('t1').clientWidth;
+               }
+               
                 for(let i=2;i<=8;i++){
                     let t='t'+i;
                     domEach(t)
@@ -80,8 +83,10 @@ import domEach from './domeach';
 
            }
            window.onresize=()=>{
-                this.t1W=document.getElementById('t1').clientWidth;
-                for(let i=2;i<=8;i++){
+               if(document.getElementById('t1')){
+                 this.t1W=document.getElementById('t1').clientWidth;
+               }
+               for(let i=2;i<=8;i++){
                   let t='t'+i;
                   domEach(t)
                }
@@ -161,7 +166,7 @@ import domEach from './domeach';
   .ant-table-tbody tr td:not(.colums){
     // padding:10px 0;
     height: 40px;
-    line-height: 30px;
+    line-height: 20px;
     border-right:1px solid #e2e7eb; 
     border-bottom:1px solid #e8e8e8; 
     vertical-align: middle;

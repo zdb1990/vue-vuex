@@ -173,6 +173,7 @@ import Clickoutside from "./clickoutside";
        position: absolute;
        top:40px;
        z-index: 1000;
+       background-color: #fff;
    }
    .error-message{
        font-size: 12px;
