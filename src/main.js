@@ -15,7 +15,7 @@ import './../static/font-icon/iconfont.css';
 import './../static/css/reset.css';
 //引入树形表格
 import TreeTable from './common/tree-table/';
-import TableTree from './common/table-tree/';
+import TableTree from './common/table-tree/'
 //表单验证
 import VeeValidate from 'vee-validate';
 //引入bootstrap样式

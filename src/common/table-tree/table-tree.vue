@@ -1,144 +1,191 @@
 <template>
-   <div class="table-tree-body">
-       <div class="admin-box">
-           <div class="admin-title">
-               admin
-           </div>
-           <div class="admin-name" >
-               AdminGroup
-           </div>
-       </div>
-       <div class="table-main">
-          <ul class="table-head">
-            <li>级组</li>
-            <li>组状态</li>
-            <li>创建人</li>
-            <li>创建时间</li>
-            <li>组内人员</li>
-            <li>描述</li>
-            <li>操作</li>
-          </ul>
-          <div class="table-body" ref="group" v-if="treeDataSource.length>0">
-              <table-item 
-                v-for="(model,i) in treeDataSource"
-                 :key="'root_node'+i"
-                 :num="i"
-                 @actionFunc="actionFunc"
-                 @deleteFunc="deleteFunc"
-                 :nodes="treeDataSource.length"
-                 :model.sync="model"
-              ></table-item>
-          </div>
-       </div>
-   </div>
+	<div class="table-tree-template">
+		<table class="ux-table">
+			<thead>
+				<tr>
+				   <th v-if="adminGroup.UserGroupType==='admin'">一级组</th>
+                   <th style="width:200px">级组</th>
+                   <th>组状态</th>
+                   <th>创建人</th>
+                   <th>创建时间</th>
+                   <th>组内人员</th>
+                   <th>描述</th>
+                   <th>操作</th>
+				</tr>
+			</thead>
+			 <tbody class="ux-tbody">
+				 <tr class="tree-item" v-for="(item,index) in initItems"  v-show="show(item)" :key="'root'+index">
+	                  <td class="admin-title" v-if="adminGroup.UserGroupType==='admin'&& index==Index" :rowspan="0">{{adminGroup.Name}}</td>
+			          <td @click="tapitem(item,index)">
+						  <div class="ux-table-title" :style="{'padding-left':item.level*16+'px'}">
+							  <span>
+						       <i v-if="item.Children && item.Children.length" :class="{'icon iconfont icon-jiahao':!item.expanded,'icon iconfont icon-jianhao':item.expanded }"></i>
+						      </span>
+						      {{item.Name}}
+						   </div>
+					  </td>
+			          <td>{{item.Statue}}</td>
+			          <td>{{item.CreatedBy}}</td>
+		              <td>{{item.CreatedTime}}</td>
+			          <td>{{item.MemberCount}}</td>
+ 			          <td>{{item.Description}}</td>
+		              <td>
+			           <a href="javascript:;" @click="deleteItem(item)">删除</a>
+	                 </td>
+  	             </tr>
+			 </tbody>
+		</table>
+	</div>
 </template>
+
 <script>
-import TableItem from './table-item';
- export default{
-     components:{
-        TableItem
-     },
-     data(){
-         return{
-             treeDataSource:[],
-             offsetH:''
-         }
-     },
-     //监听父属性传来的值
-     watch:{
-        'list':{
-            handler(){
-                console.log('变化')
-                this.initTreeData() //数据处理
-            }
-        }
-     },
-     props:['list'],
-     name:"table-tree",
-     methods:{
-        initTreeData(){
-             console.log('处理前的:',JSON.parse(JSON.stringify(this.list)));
-             //这里一定要转化，要不它的值变化监听不到
-             let tempData=JSON.parse(JSON.stringify(this.list[0].Children));
-             this.adminName=this.list[0].Name;
-             //处理数据
-             let reduceDataFunc=(data,level)=>{
-                 data.map((m,i)=>{
-                   m.isExpand=false; //每一项的展开是false
-                   m.Children=m.Children || []; //每一项的子元素 或空数组
-                   m.level=level; //每一项的level 是标
-                   //若有子元素
-                   if(m.Children.length>0){
-                       reduceDataFunc(m.Children,level+1);
-                   }
-                 })
-             }
-             //默认初始1级
-             reduceDataFunc(tempData,1); //默认从最开始1级
-             this.treeDataSource=tempData; //处理完的数据 返回给 开始数据
-            //   debugger
-            //   console.log(this.$refs.group.offsetHeight)
-              console.log(this.treeDataSource);
-         },
-         //编辑
-         actionFunc(m){
-             this.$emit('actionFunc',m)
-         },
-         //删除
-         deleteFunc(m){
-             this.$emit('deleteFunc',m)
-         }
-     },
-    mounted(){
-        const vm=this;
-        //Dom更新完了
-        vm.$nextTick(()=>{
-            vm.initTreeData();
-            // setTimeout(()=>{
-            //    vm.offsetH=vm.$refs.group.offsetHeight;
-            //   },100)
-         })
-    }
- }
+  //引入子组件
+  import treeItem from './table-item';
+  export default {
+	  name:'table-tree',
+	  props:['treedata'],
+	  components: {
+		  treeItem
+	  },
+	  data(){
+		  return {
+			  initItems:[], //处理后的数据
+			  adminGroup:{},
+			  Index:''
+		  }
+	  },
+	  methods:{
+		//处理数据
+		 initData(items,level,parent){
+		   this.initItems=[];
+		   items.forEach((item,index) => {
+			   item=Object.assign({},item,{
+				   "parent":parent,
+				   "level":level
+			   });
+				if ((typeof item.expanded) == "undefined") {
+					item = Object.assign({}, item, {
+						"expanded": false
+					});
+				}
+				if ((typeof item.show) == "undefined") {
+					item = Object.assign({}, item, {
+						"isShow": false
+					});
+				}
+				item = Object.assign({}, item, {
+                    "load": (item.expanded ? true : false)
+                });
+			   this.initItems.push(item);
+			   if(item.Children && item.expanded){
+				   this.initData(item.Chidren,level+1,item);
+			   }
+		   });
+		   console.log(this.initItems);
+		 },
+		 //影藏显示
+		 show(item){
+           return ((item.level==1) || (item.parent && item.parent.expanded && item.isShow));
+		 },
+		 //点击每一项
+		 tapitem(item,index){
+			let level=item.level+1;
+			if(item.Children){
+				if(item.expanded){
+					item.expanded=!item.expanded;
+					this.close(item,index);
+				}else{
+					item.expanded=!item.expanded;
+					if(item.load){
+						this.open(item,index);
+					}else{
+                        item.load=true;
+						item.Children.forEach((child, childIndex) => {
+							this.initItems.splice((index + childIndex + 1), 0, child);
+							console.log(this.initItems);
+							//设置监听属性
+							this.$set(this.initItems[index + childIndex + 1], 'parent', item);
+							this.$set(this.initItems[index + childIndex + 1], 'level', level);
+							this.$set(this.initItems[index + childIndex + 1], 'isShow', true);
+							this.$set(this.initItems[index + childIndex + 1], 'expanded', false);
+						});
+					}
+				}
+			}
+		 },
+		 //展开每一项
+		 open(item,index){
+			 if(item.Children){
+				 item.Children.forEach((child,childIndex)=>{
+					 child.isShow=true;
+					 if(child.Children && child.expanded){
+                        this.open(child,index + childIndex + 1);
+					 }
+				 })
+			 }
+		 },
+		 //关闭每一项
+		close(item,index) {
+			if (item.Children) {
+				item.Children.forEach((child, childIndex) => {
+					child.isShow = false;
+					child.expanded = false;
+					if (child.Children) {
+						this.close(child,index + childIndex + 1,);
+					}
+				})
+			}
+		},
+		//删除
+		deleteItem(item){
+          this.$emit('deleteHandle',item)
+		}
+	  },
+	  mounted () {
+		  const vm=this;
+		  vm.$nextTick(()=>{
+			  if(this.treedata[0].UserGroupType=='admin'){
+				 vm.initData(this.treedata[0].Children,1,null);
+				 this.adminGroup={'Name':this.treedata[0].Name,'UserGroupType':this.treedata[0].UserGroupType}
+				 this.Index=0;
+			  }else{
+				 vm.initData(this.treedata,1,null);
+			  }
+		  })
+	  }
+  }
 </script>
 
 <style lang="scss">
-     //adminGroup
-     .admin-title{
-         width: 100%;
-         line-height: 40px;
-         border:1px solid #e2e7eb;
-         border-right:0px;
-     }
-    .admin-box{
-        width:20%;
-        float: left;
-    }
-   .table-main{
-       width: 80%;
-       float: left;
-    //    padding: 0 15px;
-    //    border-top:1px solid #e2e7eb;
-   }
-   .table-head{
-       width:100%;
-       overflow: hidden;
-   }
-   .table-head  li{
-        width:14%;
-        line-height: 40px;
-        text-align: center;
-        float: left;
-        border-right:1px solid #e2e7eb;
-        border-top: 1px solid #e2e7eb;
-        border-bottom: 1px solid #e2e7eb;
-    }
-    .table-head  li:first-child{
-        border-left:1px solid #e2e7eb;
-    }
-    .admin-name{
-        border:1px solid #e2e7eb;
-        border-right:0px;
-        border-top:none; 
-    }
+ .table-tree-template{
+	 width:100%;
+ }
+ .ux-table{
+	 width:100%;
+	 border: 1px solid black;
+ }
+ .ux-table-title{
+	 width:180px;
+	 overflow: hidden;
+	 text-overflow: ellipsis;
+	 white-space: nowrap;
+	 box-sizing: border-box;
+ }
+ //表头
+ .ux-table thead tr th{
+	 line-height: 40px;
+	 text-align: center;
+	 border-right:1px solid black;
+	 border-bottom:1px solid black;
+ }
+ .ux-tbody tr td{
+	 line-height: 40px;
+	 text-align: center;
+	 border-right:1px solid black;
+	 border-bottom:1px solid black;
+ }
+ .admin-title{
+	 vertical-align: middle;
+ }
+ 
 </style>
